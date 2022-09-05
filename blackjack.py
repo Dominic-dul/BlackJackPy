@@ -90,3 +90,23 @@ def take_bet(chips):
 # take_bet(chips)
 
 # print(chips.bet)
+
+def hit(deck, hand):
+    hand.add_card(deck.deal())
+
+    if hand.value > 21:
+        hand.adjust_for_ace()
+
+def hit_or_stand(deck, hand):
+    global playing
+
+    choice = "#"
+
+    while choice not in ['S', 'H']:
+        choice = input("Provide 'S' for Stand and 'H' for Hit")
+
+    if choice == 'S':
+        playing = False
+    else:
+        hit(deck, hand)
+
