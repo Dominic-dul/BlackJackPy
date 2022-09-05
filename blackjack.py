@@ -14,5 +14,31 @@ class Card:
         self.rank = rank
 
     def __str__(self):
-        return f"{self.suit} of {self.rank}"
+        return f"{self.rank} of {self.suit}"
 
+class Deck:
+
+    def __init__(self):
+        self.deck = []
+
+        for suit in suits:
+            for rank in ranks:
+                self.deck.append(Card(suit, rank))
+
+    def shuffle(self):
+        random.shuffle(self.deck)
+
+    def __str__(self):
+        all_cards = ""
+        for card in self.deck:
+            all_cards += str(card) + "\n"
+
+        return all_cards
+
+    def deal(self):
+        return self.deck.pop()
+
+# test_deck = Deck()
+# print(test_deck)
+# test_deck.shuffle()
+# print(test_deck)
