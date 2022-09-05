@@ -106,7 +106,37 @@ def hit_or_stand(deck, hand):
         choice = input("Provide 'S' for Stand and 'H' for Hit")
 
     if choice == 'S':
+        print("Player stands. Dealer is playing.")
         playing = False
     else:
         hit(deck, hand)
 
+def show_some(player, dealer):
+    print("Dealer's Hand:")
+    print("*Hidden card* " + dealer.cards[1])
+    print("Player's Hand: ", *player.cards, sep='#')
+
+def show_all(player, dealer):
+    print("Player's hand: ", *player.cards, sep='#')
+    print(f"The value of Player hand is: {player.value}")
+    print("Dealer's hand: ", *dealer.cards, sep='#')
+    print(f"The value of Dealer hand is: {dealer.value}")
+
+def player_busts(chips):
+    print("Player busts!")
+    chips.lose_bet()
+
+def player_wins(chips):
+    print("Player wins!")
+    chips.win_bet()
+
+def dealer_wins(chips):
+    print("Dealer wins!")
+    chips.lose_bet()
+
+def dealer_busts(chips):
+    print("Dealer busts!")
+    chips.win_bet()
+
+def push():
+    print("Dealer and Player tie! It's a push. ")
