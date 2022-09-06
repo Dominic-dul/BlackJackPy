@@ -113,13 +113,14 @@ def hit_or_stand(deck, hand):
 
 def show_some(player, dealer):
     print("Dealer's Hand:")
-    print("*Hidden card* " + dealer.cards[1])
-    print("Player's Hand: ", *player.cards, sep='#')
+    print("*Hidden card* ")
+    print(dealer.cards[1].__str__())
+    print("Player's Hand: ", *player.cards, sep='\n')
 
 def show_all(player, dealer):
-    print("Player's hand: ", *player.cards, sep='#')
+    print("Player's hand: ", *player.cards, sep='\n')
     print(f"The value of Player hand is: {player.value}")
-    print("Dealer's hand: ", *dealer.cards, sep='#')
+    print("Dealer's hand: ", *dealer.cards, sep='\n')
     print(f"The value of Dealer hand is: {dealer.value}")
 
 def player_busts(chips):
@@ -140,3 +141,24 @@ def dealer_busts(chips):
 
 def push():
     print("Dealer and Player tie! It's a push. ")
+
+while True:
+    print("Welcome to the Blackjack game!")
+
+    playingDeck = Deck()
+    playingDeck.shuffle()
+
+    player = Hand()
+    dealer = Hand()
+
+    player.add_card(playingDeck.deal())
+    player.add_card(playingDeck.deal())
+    dealer.add_card(playingDeck.deal())
+    dealer.add_card(playingDeck.deal())
+
+    chips = Chips()
+    take_bet(chips)
+
+    show_some(player, dealer)
+
+    break
