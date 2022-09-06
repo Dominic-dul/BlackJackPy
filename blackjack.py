@@ -38,12 +38,6 @@ class Deck:
     def deal(self):
         return self.deck.pop()
 
-# test_deck = Deck()
-# print(test_deck)
-# test_deck.shuffle()
-# print(test_deck)
-# print(test_deck.deal())
-
 class Hand:
     def __init__(self):
         self.cards = []
@@ -85,14 +79,12 @@ def take_bet(chips):
             else:
                 print("Insufficient funds! Try again")
 
-# chips = Chips()
-
-# take_bet(chips)
-
-# print(chips.bet)
 
 def hit(deck, hand):
-    hand.add_card(deck.deal())
+
+    newCard = deck.deal()
+    print(f"The newly drawn card is {newCard}")
+    hand.add_card(newCard)
 
     if hand.value > 21:
         hand.adjust_for_ace()
@@ -103,7 +95,11 @@ def hit_or_stand(deck, hand):
     choice = "#"
 
     while choice not in ['S', 'H']:
-        choice = input("Provide 'S' for Stand and 'H' for Hit")
+        choice = input("Provide 'S' for Stand and 'H' for Hit: ")
+
+        if choice not in ['S', 'H']:
+            print("Wrong input! Try again.")
+
 
     if choice == 'S':
         print("Player stands. Dealer is playing.")
@@ -118,10 +114,10 @@ def show_some(player, dealer):
     print("Player's Hand: ", *player.cards, sep='\n')
 
 def show_all(player, dealer):
-    print("Player's hand: ", *player.cards, sep='\n')
-    print(f"The value of Player hand is: {player.value}")
     print("Dealer's hand: ", *dealer.cards, sep='\n')
     print(f"The value of Dealer hand is: {dealer.value}")
+    print("Player's hand: ", *player.cards, sep='\n')
+    print(f"The value of Player hand is: {player.value}")
 
 def player_busts(chips):
     print("Player busts!")
@@ -142,6 +138,8 @@ def dealer_busts(chips):
 def push():
     print("Dealer and Player tie! It's a push. ")
 
+chips = Chips()
+
 while True:
     print("Welcome to the Blackjack game!")
 
@@ -156,9 +154,66 @@ while True:
     dealer.add_card(playingDeck.deal())
     dealer.add_card(playingDeck.deal())
 
-    chips = Chips()
     take_bet(chips)
 
-    show_some(player, dealer)
+    while playing:
+        show_some(player, dealer)
 
-    break
+        hit_or_stand(playingDeck, player)
+
+        if player.value > 21:
+            player_busts(chips)
+            break
+    
+    if player.value <= 21:
+        while(dealer.value <= 21):
+            show_all(player, dealer)
+
+            if dealer.value > player.value:
+                dealer_wins(chips)
+                break
+            elif dealer.value == player.value:
+                push()
+                break
+            else:
+                newCard = playingDeck.deal()
+                print(f"The newly drawn card is {newCard}")
+                dealer.add_card(newCard)
+
+                if dealer.value > 21:
+                    dealer_busts(chips)
+
+        print(f"Player has {chips.total} chips left")
+        
+        retry = '#'
+
+        while retry not in ['Y', 'N']:
+            retry = input("Do you want to play another round? 'Y' for Yes, 'N' for No: ")
+
+            if retry not in ['Y', 'N']:
+                print("Wrong input! Try again")
+
+        if retry == 'Y':
+            playing = True
+            continue
+        else:
+            print("Good game!")
+            break
+
+    else:
+        print(f"Player has {chips.total} chips left")
+        
+        retry = '#'
+
+        while retry not in ['Y', 'N']:
+            retry = input("Do you want to play another round? 'Y' for Yes, 'N' for No: ")
+
+            if retry not in ['Y', 'N']:
+                print("Wrong input! Try again")
+
+        if retry == 'Y':
+            playing = True
+            continue
+        else:
+            print("Good game!")
+            break
